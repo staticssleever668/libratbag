@@ -285,16 +285,7 @@ subdir('hidpp10-dump-page')
 subdir('hidpp20-dump-page')
 
 #### hidpp20-reset ####
-src_hidpp20_reset = [ 'tools/hidpp20-reset.c' ]
-executable('hidpp20-reset',
-	src_hidpp20_reset,
-	dependencies : [
-		dep_libhidpp,
-		dep_libutil,
-	],
-	include_directories : include_directories('src'),
-	install : false,
-)
+subdir('hidpp20-reset')
 
 #### lur-command ####
 #
