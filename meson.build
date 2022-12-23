@@ -89,19 +89,29 @@ endif
 
 #### libutil.a ####
 src_libutil = [
-	'src/libratbag-util.c',
-	'src/libratbag-util.h'
+  'libutil/libratbag-util.c',
+  'libutil/libratbag-util.h',
 ]
 
 deps_libutil = [
-	dep_udev,
+  dep_udev,
 ]
 
 lib_libutil = static_library('util',
-	src_libutil,
-	dependencies : deps_libutil
+  src_libutil,
+  dependencies : deps_libutil,
+  include_directories : [
+    'libutil',
+    'src',
+  ],
 )
-dep_libutil = declare_dependency(link_with: lib_libutil)
+dep_libutil = declare_dependency(
+  link_with: lib_libutil,
+  include_directories : [
+    'libutil',
+    'src',
+  ],
+)
 
 ### libhidpp.a ####
 src_libhidpp = [
@@ -114,7 +124,10 @@ src_libhidpp = [
 	'src/usb-ids.h'
 ]
 
-deps_libhidpp = [ dep_lm ]
+deps_libhidpp = [
+  dep_libutil,
+  dep_lm,
+]
 
 lib_libhidpp = static_library('hidpp',
 	src_libhidpp,
@@ -126,7 +139,9 @@ src_libasus = [
   'libasus/asus.c',
 ]
 
-deps_libasus = [ ]
+deps_libasus = [
+  dep_libutil,
+]
 
 lib_libasus = static_library('asus',
   src_libasus,
@@ -251,6 +266,7 @@ src_libshared = [
 deps_libshared = [
 	dep_udev,
 	dep_libevdev,
+	dep_libutil,
 ]
 lib_libshared = static_library('shared',
 	src_libshared,
@@ -263,7 +279,10 @@ dep_libshared = declare_dependency(link_with: lib_libshared)
 src_hidpp10_dump_page = [ 'tools/hidpp10-dump-page.c' ]
 executable('hidpp10-dump-page',
 	src_hidpp10_dump_page,
-	dependencies : [ dep_libhidpp ],
+	dependencies : [
+		dep_libhidpp,
+		dep_libutil,
+	],
 	include_directories : include_directories('src'),
 	install : false,
 )
@@ -272,7 +291,10 @@ executable('hidpp10-dump-page',
 src_hidpp20_dump_page = [ 'tools/hidpp20-dump-page.c' ]
 executable('hidpp20-dump-page',
 	src_hidpp20_dump_page,
-	dependencies : [ dep_libhidpp ],
+	dependencies : [
+		dep_libhidpp,
+		dep_libutil,
+	],
 	include_directories : include_directories('src'),
 	install : false,
 )
@@ -281,7 +303,10 @@ executable('hidpp20-dump-page',
 src_hidpp20_reset = [ 'tools/hidpp20-reset.c' ]
 executable('hidpp20-reset',
 	src_hidpp20_reset,
-	dependencies : [ dep_libhidpp ],
+	dependencies : [
+		dep_libhidpp,
+		dep_libutil,
+	],
 	include_directories : include_directories('src'),
 	install : false,
 )
@@ -292,7 +317,11 @@ executable('hidpp20-reset',
 src_lur_command = [ 'tools/lur-command.c' ]
 executable('lur-command',
 	src_lur_command,
-	dependencies : [ dep_libshared, dep_liblur ],
+	dependencies : [
+		dep_liblur,
+		dep_libshared,
+		dep_libutil,
+	],
 	include_directories : include_directories('src'),
 	install : true,
 )
@@ -391,14 +420,13 @@ src_ratbagd = [
 	'ratbagd/ratbagd-test.c',
 	'ratbagd/ratbagd-json.c',
 	'ratbagd/ratbagd-json.h',
-	'src/libratbag-util.h',
-	'src/libratbag-util.c',
 ]
 
 deps_ratbagd = [
 	dep_udev,
 	dep_logind,
 	dep_libratbag,
+	dep_libutil,
 	dep_unistring,
 ]
 
