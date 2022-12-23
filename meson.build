@@ -282,16 +282,7 @@ dep_libshared = declare_dependency(link_with: lib_libshared)
 subdir('hidpp10-dump-page')
 
 #### hidpp20-dump-page ####
-src_hidpp20_dump_page = [ 'tools/hidpp20-dump-page.c' ]
-executable('hidpp20-dump-page',
-	src_hidpp20_dump_page,
-	dependencies : [
-		dep_libhidpp,
-		dep_libutil,
-	],
-	include_directories : include_directories('src'),
-	install : false,
-)
+subdir('hidpp20-dump-page')
 
 #### hidpp20-reset ####
 src_hidpp20_reset = [ 'tools/hidpp20-reset.c' ]
