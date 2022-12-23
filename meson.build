@@ -314,7 +314,7 @@ executable('hidpp20-reset',
 #### lur-command ####
 #
 # A tool to access and manipulate logitech unifying receivers.
-src_lur_command = [ 'tools/lur-command.c' ]
+src_lur_command = [ 'lur-command/lur-command.c' ]
 executable('lur-command',
 	src_lur_command,
 	dependencies : [
@@ -322,7 +322,7 @@ executable('lur-command',
 		dep_libshared,
 		dep_libutil,
 	],
-	include_directories : include_directories('src'),
+	include_directories : 'lur-command',
 	install : true,
 )
 
@@ -331,7 +331,7 @@ man_config = configuration_data()
 man_config.set('version', meson.project_version())
 
 man_lur_command = configure_file (
-	input: 'tools/lur-command.man',
+	input: 'lur-command/lur-command.1.in',
 	output: 'lur-command.1',
 	configuration: man_config,
 	install : true,
