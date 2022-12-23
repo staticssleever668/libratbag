@@ -137,11 +137,10 @@ dep_libasus = declare_dependency(link_with: lib_libasus)
 #
 # liblur is the library to handle logitech unifying receivers.
 #
-install_headers('src/liblur.h')
+install_headers('liblur/liblur.h')
 
 src_liblur = [
-	'src/liblur.c',
-	'src/liblur.h'
+	'liblur/liblur.c',
 ]
 
 deps_liblur = [
@@ -150,11 +149,14 @@ deps_liblur = [
 	dep_libasus,
 ]
 
-lur_mapfile = 'src/liblur.sym'
+lur_mapfile = 'liblur/liblur.sym'
 lur_version_flag = '-Wl,--version-script,@0@/@1@'.format(meson.current_source_dir(), lur_mapfile)
 lib_liblur = shared_library('lur',
 	src_liblur,
-	include_directories : include_directories('.'),
+	include_directories : [
+		'liblur',
+		'src',
+	],
 	dependencies : deps_liblur,
 	version : liblur_so_version,
 	link_args : lur_version_flag,
