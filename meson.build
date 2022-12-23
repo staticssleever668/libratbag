@@ -118,13 +118,9 @@ dep_libutil = declare_dependency(
 
 ### libhidpp.a ####
 src_libhidpp = [
-	'src/hidpp-generic.h',
-	'src/hidpp-generic.c',
-	'src/hidpp10.h',
-	'src/hidpp10.c',
-	'src/hidpp20.h',
-	'src/hidpp20.c',
-	'src/usb-ids.h'
+  'libhidpp/hidpp-generic.c',
+  'libhidpp/hidpp10.c',
+  'libhidpp/hidpp20.c',
 ]
 
 deps_libhidpp = [
@@ -132,10 +128,17 @@ deps_libhidpp = [
   dep_lm,
 ]
 
-lib_libhidpp = static_library('hidpp',
-	src_libhidpp,
-	dependencies : deps_libhidpp)
-dep_libhidpp = declare_dependency(link_with: lib_libhidpp)
+lib_libhidpp = static_library(
+  'hidpp',
+  src_libhidpp,
+  dependencies : deps_libhidpp,
+  include_directories : 'libhidpp',
+)
+
+dep_libhidpp = declare_dependency(
+  include_directories : 'libhidpp',
+  link_with : lib_libhidpp,
+)
 
 ### libasus.a ####
 src_libasus = [
@@ -609,7 +612,7 @@ shared_library(
    install: false,
 )
 
-i_source = join_paths(meson.source_root(), 'src', 'hidpp.i')
+i_source = join_paths(meson.source_root(), 'libhidpp', 'hidpp.i')
 c_source = swig_gen.process(i_source)
 shared_library(
    'hidpp',
