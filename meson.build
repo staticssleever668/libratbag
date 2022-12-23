@@ -48,6 +48,9 @@ libratbag_data_dir = join_paths(get_option('prefix'),
 libratbag_data_dir_devel = join_paths(meson.source_root(), 'data', 'devices')
 config_h.set_quoted('LIBRATBAG_DATA_DIR', libratbag_data_dir)
 
+# To be able to include config.h in subdirectories.
+top_inc = include_directories('.')
+
 # Coverity breaks because it doesn't define _Float128 correctly, you'll end
 # up with a bunch of messages in the form:
 # "/usr/include/stdlib.h", line 133: error #20: identifier "_Float128" is
