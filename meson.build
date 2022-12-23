@@ -178,7 +178,6 @@ src_liblur = [
 deps_liblur = [
 	dep_libutil,
 	dep_libhidpp,
-	dep_libasus,
 ]
 
 lur_mapfile = 'liblur/liblur.sym'
