@@ -123,15 +123,26 @@ dep_libhidpp = declare_dependency(link_with: lib_libhidpp)
 
 ### libasus.a ####
 src_libasus = [
-	'src/asus.c',
+  'libasus/asus.c',
 ]
 
 deps_libasus = [ ]
 
 lib_libasus = static_library('asus',
-	src_libasus,
-	dependencies : deps_libasus)
-dep_libasus = declare_dependency(link_with: lib_libasus)
+  src_libasus,
+  dependencies : deps_libasus,
+  include_directories : [
+    'libasus',
+    'src',
+  ],
+)
+dep_libasus = declare_dependency(
+  link_with: lib_libasus,
+  include_directories : [
+    'libasus',
+	'src',
+  ],
+)
 
 ### liblur ####
 #
