@@ -264,21 +264,28 @@ dep_libratbag = declare_dependency(
 
 #### libshared.a ####
 src_libshared = [
-	'tools/shared.c',
-	'tools/shared.h'
+  'shared/shared.c',
+  'shared/shared.h'
 ]
 
 deps_libshared = [
-	dep_udev,
-	dep_libevdev,
-	dep_libutil,
+  dep_libevdev,
+  dep_libratbag,
+  dep_libutil,
+  dep_udev,
 ]
-lib_libshared = static_library('shared',
-	src_libshared,
-	dependencies : deps_libshared,
-	include_directories : include_directories('src')
+
+lib_libshared = static_library(
+  'shared',
+  src_libshared,
+  dependencies : deps_libshared,
+  include_directories : 'shared',
 )
-dep_libshared = declare_dependency(link_with: lib_libshared)
+
+dep_libshared = declare_dependency(
+  include_directories : 'shared',
+  link_with: lib_libshared,
+)
 
 #### hidpp10-dump-page ####
 subdir('hidpp10-dump-page')
