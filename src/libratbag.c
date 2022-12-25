@@ -65,6 +65,12 @@ ratbag_led_destroy(struct ratbag_led *led);
 static void
 ratbag_resolution_destroy(struct ratbag_resolution *resolution);
 
+static const char color_red[] = "\033[0;31m";
+static const char color_green[] = "\033[0;32m";
+static const char color_blue[] = "\033[0;36m";
+static const char color_white[] = "\033[0;37m";
+static const char color_reset[] = "\033[0m";
+
 static void
 ratbag_default_log_func(struct ratbag *ratbag,
 			enum ratbag_log_priority priority,
@@ -73,17 +79,23 @@ ratbag_default_log_func(struct ratbag *ratbag,
 	const char *prefix;
 	FILE *out = stdout;
 
+	const char* colorizer = color_reset;
+
 	switch(priority) {
 	case RATBAG_LOG_PRIORITY_RAW:
+		colorizer = color_white;
 		prefix = "raw";
 		break;
 	case RATBAG_LOG_PRIORITY_DEBUG:
+		colorizer = color_blue;
 		prefix = "debug";
 		break;
 	case RATBAG_LOG_PRIORITY_INFO:
+		colorizer = color_green;
 		prefix = "info";
 		break;
 	case RATBAG_LOG_PRIORITY_ERROR:
+		colorizer = color_red;
 		prefix = "error";
 		out = stderr;
 		break;
@@ -92,8 +104,9 @@ ratbag_default_log_func(struct ratbag *ratbag,
 		break;
 	}
 
-	fprintf(out, "ratbag %s: ", prefix);
+	fprintf(out, "%sratbag %s: ", colorizer, prefix);
 	vfprintf(out, format, args);
+	fprintf(out, color_reset);
 }
 
 void
