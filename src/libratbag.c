@@ -514,6 +514,15 @@ ratbag_device_unref(struct ratbag_device *device)
 	return NULL;
 }
 
+LIBRATBAG_EXPORT bool
+ratbag_device_has_capability(const struct ratbag_device *device,
+			      enum ratbag_device_capability cap)
+{
+	assert(cap <= RATBAG_DEVICE_CAP_MOUSE_BUTTONS);
+
+	return !!(device->capabilities & (1 << cap));
+}
+
 LIBRATBAG_EXPORT const char *
 ratbag_device_get_name(const struct ratbag_device* device)
 {

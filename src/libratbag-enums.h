@@ -78,6 +78,20 @@ enum ratbag_error_code {
 /**
  * @ingroup enums
  */
+enum ratbag_device_capability {
+	RATBAG_DEVICE_CAP_NONE = 0,
+
+	/**
+	 * First two buttons on this device must be left and right mouse
+	 * buttons.
+	 * Use this capability on mouse devices.
+	 */
+	RATBAG_DEVICE_CAP_MOUSE_BUTTONS,
+};
+
+/**
+ * @ingroup enums
+ */
 enum ratbag_profile_capability {
 	RATBAG_PROFILE_CAP_NONE = 0,
 

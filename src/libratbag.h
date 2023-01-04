@@ -424,6 +424,17 @@ ratbag_device_get_user_data(const struct ratbag_device *device);
 /**
  * @ingroup device
  *
+ * Check if a device has a specific capability.
+ *
+ * @return non-zero if the capability is available, zero otherwise.
+ */
+bool
+ratbag_device_has_capability(const struct ratbag_device *device,
+			     enum ratbag_device_capability cap);
+
+/**
+ * @ingroup device
+ *
  * @param device A previously initialized ratbag device
  * @return The name of the device associated with the given ratbag.
  */

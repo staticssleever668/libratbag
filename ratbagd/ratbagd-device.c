@@ -220,11 +220,42 @@ ratbag_device_get_model(sd_bus *bus,
 	return sd_bus_message_append(reply, "s", model);
 }
 
+static int
+ratbagd_device_get_capabilities(sd_bus *bus,
+				const char *path,
+				const char *interface,
+				const char *property,
+				sd_bus_message *reply,
+				void *userdata,
+				sd_bus_error *error)
+{
+	struct ratbagd_device *device = userdata;
+	struct ratbag_device *lib_device = device->lib_device;
+
+	enum ratbag_device_capability caps[] = {
+		RATBAG_DEVICE_CAP_MOUSE_BUTTONS,
+	};
+
+	CHECK_CALL(sd_bus_message_open_container(reply, 'a', "u"));
+
+	for (size_t i = 0; i < ELEMENTSOF(caps); i++) {
+		enum ratbag_device_capability cap = caps[i];
+		if (ratbag_device_has_capability(lib_device, cap)) {
+			CHECK_CALL(sd_bus_message_append(reply, "u", cap));
+		}
+	}
+
+	CHECK_CALL(sd_bus_message_close_container(reply));
+
+	return 0;
+}
+
 const sd_bus_vtable ratbagd_device_vtable[] = {
 	SD_BUS_VTABLE_START(0),
 	SD_BUS_PROPERTY("Model", "s", ratbag_device_get_model, 0, SD_BUS_VTABLE_PROPERTY_CONST),
 	SD_BUS_PROPERTY("Name", "s", ratbagd_device_get_device_name, 0, SD_BUS_VTABLE_PROPERTY_CONST),
 	SD_BUS_PROPERTY("Profiles", "ao", ratbagd_device_get_profiles, 0, SD_BUS_VTABLE_PROPERTY_CONST),
+	SD_BUS_PROPERTY("Capabilities", "au", ratbagd_device_get_capabilities, 0, SD_BUS_VTABLE_PROPERTY_CONST),
 	SD_BUS_METHOD("Commit", "", "u", ratbagd_device_commit, SD_BUS_VTABLE_UNPRIVILEGED),
 	SD_BUS_SIGNAL("Resync", "", 0),
 	SD_BUS_VTABLE_END,

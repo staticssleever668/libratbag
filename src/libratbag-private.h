@@ -141,6 +141,7 @@ struct ratbag_device {
 	struct ratbag *ratbag;
 	struct ratbag_device_data *data;
 
+	uint32_t capabilities;
 	unsigned num_profiles;
 	struct list profiles;
 
@@ -546,6 +547,15 @@ ratbag_resolution_set_cap(struct ratbag_resolution *res,
 	assert(cap <= RATBAG_RESOLUTION_CAP_DISABLE);
 
 	res->capabilities |= (1 << cap);
+}
+
+static inline void
+ratbag_device_set_cap(struct ratbag_device *device,
+		      enum ratbag_device_capability cap)
+{
+	assert(cap <= RATBAG_DEVICE_CAP_NONE);
+
+	device->capabilities |= (1 << cap);
 }
 
 static inline void
